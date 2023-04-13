@@ -13,68 +13,88 @@ public class JohnSmithSerializer : IListSerializer
 
     public Task<ListNode> DeepCopy(ListNode head)
     {
-        throw new NotImplementedException();
+        var nodeIds = new Dictionary<ListNode, int>();
+        var newListNodes = new List<ListNode>();
+
+        var newHead = new ListNode() { Data = $"{head.Data}" };
+
+        for (var (current, newNode, key) = (head, newHead, 0); current != null; current = current.Next, newNode = newNode.Next, key++)
+        {
+            nodeIds.Add(current, key);
+            newListNodes.Add(newNode);
+
+            if (current.Next != null)
+            {
+                newNode.Next = new ListNode
+                {
+                    Previous = newNode
+                };
+            }
+        }
+
+        for (var (current, newNode) = (head, newHead); current != null; current = current.Next, newNode = newNode.Next)
+        {
+            if (nodeIds[current] >= 0)
+                newNode.Random = newListNodes[nodeIds[current.Random]];
+        }
+
+        return Task.FromResult(newHead);
     }
 
     public Task<ListNode> Deserialize(Stream s)
     {
-        var randNodes = new Dictionary<string, ListNode>();
-        var previousNodes = new Dictionary<string, ListNode>();
+        var readData = new Dictionary<int, (string data, int randIndex)>();
+        var count = 0;
+
         using var reader = new BinaryReader(s, Encoding.UTF8, false);
-
-        ListNode current = null;
-
         while (reader.PeekChar() != -1)
         {
             var data = reader.ReadString();
-            var randData = reader.ReadString();
+            var randIndex = reader.ReadInt32();
 
-            if (current == null)
+            readData.Add(count++, (data, randIndex));
+        }
+
+        var head = new ListNode();
+        var listNodes = new List<ListNode>(count);
+
+        for (var (current, key) = (head, 0); current != null && key < count; current = current.Next, key++)
+        {
+            listNodes.Add(current);
+            current.Data = readData[key].data;
+
+            if (key < count - 1)
             {
-                current = new ListNode() { Data = data };
-            }
-            else
-            {
-                current.Next = new ListNode() { Data = data, Previous = current };
-                current = current.Next;
-
-                var isSuccessRandNode = randNodes.TryGetValue(data, out var parentRandNode);
-                if (isSuccessRandNode)
+                current.Next = new ListNode
                 {
-                    parentRandNode.Random = current;
-                }
-                else
-                {
-                    previousNodes.Add(data, current);
-                }
-
-                var isSuccessPrevNode = previousNodes.TryGetValue(randData, out var prevNode);
-                if (isSuccessPrevNode)
-                {
-                    current.Random = prevNode;
-                }
-                else
-                {
-                    randNodes.Add(randData, current);
-                }
+                    Previous = current
+                };
             }
         }
 
-        return Task.FromResult(randNodes.First().Value);
+        for (var (current, key) = (head, 0); current != null && key < count; current = current.Next, key++)
+        {
+            if (readData[key].randIndex >= 0)
+                current.Random = listNodes[readData[key].randIndex];
+        }
+
+        return Task.FromResult(head);
     }
 
     public Task Serialize(ListNode head, Stream s)
     {
-        var currentNode = head;
+        var nodeIds = new Dictionary<ListNode, int>();
+
+        for (var (current, index) = (head, 0); current != null; current = current.Next, index++)
+        {
+            nodeIds.Add(current, index);
+        }
 
         using var writer = new BinaryWriter(s, Encoding.UTF8, false);
-
-        while (currentNode.Next != null)
+        for (var current = head; current != null; current = current.Next)
         {
-            writer.Write(currentNode.Data);
-            writer.Write(currentNode.Random.Data);
-
-            currentNode = currentNode.Next;
+            writer.Write(current.Data);
+            writer.Write(current.Random != null ? nodeIds[current.Random] : -1);
         }
 
         return Task.CompletedTask;
