@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33414.496
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GraphProject", "GraphProject\GraphProject.csproj", "{86397A38-D42A-4A3D-B70D-C3A0BBCCF84E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GraphProject", "GraphProject\GraphProject.csproj", "{86397A38-D42A-4A3D-B70D-C3A0BBCCF84E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NodeTests", "NodeTests\NodeTests.csproj", "{582BB34C-3C74-4D23-BA4A-B94130DB22D8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{86397A38-D42A-4A3D-B70D-C3A0BBCCF84E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{86397A38-D42A-4A3D-B70D-C3A0BBCCF84E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{86397A38-D42A-4A3D-B70D-C3A0BBCCF84E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{582BB34C-3C74-4D23-BA4A-B94130DB22D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{582BB34C-3C74-4D23-BA4A-B94130DB22D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{582BB34C-3C74-4D23-BA4A-B94130DB22D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{582BB34C-3C74-4D23-BA4A-B94130DB22D8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

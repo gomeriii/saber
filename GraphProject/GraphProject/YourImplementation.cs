@@ -14,7 +14,7 @@ public class JohnSmithSerializer : IListSerializer
     public Task<ListNode> DeepCopy(ListNode head)
     {
         var nodeIds = new Dictionary<ListNode, int>();
-        var newHead = new ListNode() { Data = head.Data };
+        var newHead = new ListNode();
 
         var count = 0;
 
@@ -29,6 +29,7 @@ public class JohnSmithSerializer : IListSerializer
                     Previous = newNode
                 };
             }
+            newNode.Data = current.Data;
 
             count++;
         }
@@ -43,7 +44,8 @@ public class JohnSmithSerializer : IListSerializer
         for (var (current, newNode) = (head, newHead); current != null; current = current.Next, newNode = newNode.Next)
         {
             if (nodeIds[current] >= 0)
-                newNode.Random = newListNodes[nodeIds[current.Random]];
+                if(current.Random != null)
+                    newNode.Random = newListNodes[nodeIds[current.Random]];
         }
 
         return Task.FromResult(newHead);
