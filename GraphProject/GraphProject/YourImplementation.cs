@@ -14,14 +14,13 @@ public class JohnSmithSerializer : IListSerializer
     public Task<ListNode> DeepCopy(ListNode head)
     {
         var nodeIds = new Dictionary<ListNode, int>();
-        var newListNodes = new List<ListNode>();
+        var newHead = new ListNode() { Data = head.Data };
 
-        var newHead = new ListNode() { Data = $"{head.Data}" };
+        var count = 0;
 
         for (var (current, newNode, key) = (head, newHead, 0); current != null; current = current.Next, newNode = newNode.Next, key++)
         {
             nodeIds.Add(current, key);
-            newListNodes.Add(newNode);
 
             if (current.Next != null)
             {
@@ -30,6 +29,15 @@ public class JohnSmithSerializer : IListSerializer
                     Previous = newNode
                 };
             }
+
+            count++;
+        }
+
+        var newListNodes = new List<ListNode>(count);
+
+        for (var newNode = newHead; newNode != null; newNode = newNode.Next)
+        {
+            newListNodes.Add(newNode);
         }
 
         for (var (current, newNode) = (head, newHead); current != null; current = current.Next, newNode = newNode.Next)
