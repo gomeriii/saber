@@ -4,6 +4,7 @@ namespace NodeTests;
 
 public static class ListNodeExtensions
 {
+    //Create ListNodes with random values, for data using HashCode
     public static ListNode CreateNodes(int count)
     {
         var head = new ListNode();
@@ -21,7 +22,6 @@ public static class ListNodeExtensions
                 };
             }
         }
-
         
         for (int i = 0; i < count; i++)
         {

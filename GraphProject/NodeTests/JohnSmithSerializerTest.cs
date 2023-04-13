@@ -31,7 +31,7 @@ public class JohnSmithSerializerTest
 
         for (var (sNode, dNode, index) = (headNode, deserializedHead, 0); sNode != null; sNode = sNode.Next, dNode = dNode.Next, index++)
         {
-            if (index < nodesCount-1)
+            if (index < nodesCount - 1)
                 Assert.NotNull(dNode.Next);
             if (index > 0)
                 Assert.NotNull(dNode.Previous);
@@ -61,7 +61,7 @@ public class JohnSmithSerializerTest
             if (index < nodesCount - 1)
             {
                 Assert.NotNull(newNode.Next);
-                Assert.NotEqual(newNode.Next, oldNode.Next);
+                Assert.NotEqual(newNode.Next, oldNode.Next); //check by reference 
             }
 
             if (index > 0)
@@ -75,7 +75,7 @@ public class JohnSmithSerializerTest
             Assert.Equal(oldNode.Previous?.Data, newNode.Previous?.Data);
             Assert.Equal(oldNode.Random?.Data, newNode.Random?.Data);
 
-            if(oldNode.Random != null)
+            if (oldNode.Random != null)
                 Assert.NotEqual(oldNode.Random, newNode.Random);
         }
     }

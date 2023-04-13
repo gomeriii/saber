@@ -29,6 +29,7 @@ public class JohnSmithSerializer : IListSerializer
                     Previous = newNode
                 };
             }
+
             newNode.Data = current.Data;
 
             count++;
@@ -44,7 +45,7 @@ public class JohnSmithSerializer : IListSerializer
         for (var (current, newNode) = (head, newHead); current != null; current = current.Next, newNode = newNode.Next)
         {
             if (nodeIds[current] >= 0)
-                if(current.Random != null)
+                if (current.Random != null)
                     newNode.Random = newListNodes[nodeIds[current.Random]];
         }
 
